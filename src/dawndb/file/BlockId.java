@@ -1,7 +1,5 @@
 package dawndb.file;
 
-import java.util.Objects;
-
 /**
  * @Author: WangChen
  * @Date: 2022/12/29 20:40
@@ -9,7 +7,6 @@ import java.util.Objects;
  * @Description:
  * 通过文件名和逻辑块号标识特定块。
  */
-
 
 public class BlockId {
 

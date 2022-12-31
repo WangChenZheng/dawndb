@@ -3,6 +3,7 @@ package dawndb.file;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 /**
  * @Author: WangChen
@@ -11,6 +12,9 @@ import java.nio.charset.StandardCharsets;
  * @Description:
  * Page对象保存磁盘块的内容。
  * blob字节数 blob内容
+ *
+ * bb: 缓冲区
+ * CHARSET: 编码方式
  */
 
 
@@ -37,6 +41,7 @@ public class Page {
 
     /**
      * 读取4个字节的数据
+     * getInt(0)为获取文件的字节数
      * @param offset 起始位置
      * @return offset后4个字节的数据
      */
@@ -67,22 +72,42 @@ public class Page {
         return b;
     }
 
+    /**
+     * 设置缓冲区数据
+     */
     public void setBytes(int offset, byte[] b) {
         bb.position(offset);
         bb.putInt(b.length);
         bb.put(b);
     }
 
+    /**
+     * 将缓冲区数据编码为字符串
+     */
     public String getString(int offset) {
         byte[] b = getBytes(offset);
         return new String(b, CHARSET);
     }
 
+    /**
+     * 向缓冲区写入字符串
+     */
+    public void setString(int offset, String s) {
+        byte[] b = s.getBytes(CHARSET);
+        setBytes(offset, b);
+    }
+
+    /**
+     * 计算存储strlen长度的字符数据最大需要的存储空间
+     */
     public static int maxLength(int strlen) {
         float bytesPreChar = CHARSET.newEncoder().maxBytesPerChar();
         return Integer.BYTES + (strlen * (int)bytesPreChar);
     }
 
+    /**
+     * 重置缓冲区指针
+     */
     ByteBuffer contents() {
         bb.position(0);
         return bb;
