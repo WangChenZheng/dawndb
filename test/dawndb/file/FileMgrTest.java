@@ -16,7 +16,7 @@ public class FileMgrTest {
 
     public static void main(String[] args) throws IOException {
         // 创建数据库dbtest, 数据块大小400字节
-        FileMgr fm = new FileMgr(new File("dbtest/file"), 400);
+        FileMgr fm = new FileMgr(new File("dbtest"), 400);
 
         // 创建文件stu.tbl, 该文件当前占用一个磁盘块
         BlockId blk = new BlockId("stu.tbl", 1);
