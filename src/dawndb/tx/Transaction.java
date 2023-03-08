@@ -135,6 +135,20 @@ public class Transaction {
     }
 
     /**
+     * Return the number of blocks in the specified file.
+     * This method first obtains an SLock on the
+     * "end of the file", before asking the file manager
+     * to return the file size.
+     * @param filename the name of the file
+     * @return the number of blocks in the file
+     */
+    public int size(String filename) {
+        BlockId dummyblk = new BlockId(filename, END_OF_FILE);
+        concurMgr.sLock(dummyblk);
+        return fm.length(filename);
+    }
+
+    /**
      * 在指定文件的末尾追加一个新块，并返回对该块的引用。
      * 在执行追加操作之前，该方法首先在“文件的末尾新块”上获得一个XLock。
      * @return
@@ -157,4 +171,5 @@ public class Transaction {
         nextTxNum++;
         return nextTxNum;
     }
+
 }
